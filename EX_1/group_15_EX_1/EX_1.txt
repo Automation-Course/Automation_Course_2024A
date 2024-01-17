@@ -1,0 +1,204 @@
+package Group_15_lab1;
+
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
+public class Group_15_1 {
+static Scanner sc = new Scanner (System.in);
+
+
+public static void printMenu() {
+
+System.out.println(" Welcome to basis calculator!\r\n"
+
++ "1. Convert a binary number to hexadecimal number\r\n"
++ "2. Convert a hexadecimal number to binary number\r\n"
++ "3. Exit\r\n"
++ "Please select an option>");
+}//printMenu
+
+public static void main(String[] args) {
+String input;
+int option;
+
+do {printMenu();
+option = sc.nextInt();
+
+if (option<1 || option>3) {//range of option
+System.out.println("Invalid input");
+}
+
+else {
+switch (option) {
+
+case 1:
+System.out.println("Please enter a binary number.");
+input=sc.next();
+if (isBinary(input)) {
+System.out.println("Your answer is:" + Divide4(input));
+}
+else
+System.out.println("Invalid input! You have to enter a binary number!");
+break;
+
+case 2:
+System.out.println("Please enter a Hexadecimal number.");
+input=sc.next();
+if (isHexadecimal(input)) {
+System.out.println("Your answer is:" + noMod1(input));
+}
+else
+System.out.println("Invalid input! You have to enter a Hexadecimal number!");
+break;
+
+case 3://end program
+System.out.print("Goodbye!");
+break;
+
+}
+}
+
+}
+while (option != 3);
+}
+public static boolean isBinary (String input) {
+for(int i=0;i<input.length(); i++ ) {
+if (!(((input.charAt(i))=='0') || (input.charAt(i)=='1'))){
+return false;
+}
+}
+return true;
+
+}
+
+public static String Divide4(String input) { //in order to convert binary to hex
+if (input.length()%4 !=0)
+input=giveZero(input); //making sure that the string length will divide exactly by 4
+return noMod4(input); //anyway, convert binary to hex after dividing to substrings of 4 digits
+}
+
+public static String giveZero(String input) { //making sure that the input will divide exactly to 4
+int remain=input.length()%4;
+if(remain==1)
+input= "000"+input;
+else if(remain==2)
+input="00"+input;
+else
+input="0"+input;
+return input;
+}
+
+public static String noMod4(String input) { //dividing to substrings of 4 digits
+int divided = input.length() / 4;
+String output = "";
+for (int i=0; i<divided; i++) {
+String subOutput = input.substring(i*4, (i+1)*4);
+output += DecToHex(BinToDec(subOutput));
+}
+return(output);
+}
+
+public static double BinToDec(String s) { //convert binary string to decimal number
+double sum = 0;
+int digit;
+for (int i=0; i<4; i++) {
+digit= (int)(s.charAt(i)-'0');
+sum = sum+ (digit*(Math.pow(2,3-i)));
+}
+return sum;
+}
+
+public static String DecToHex (double num) //convert the decimal number to hexedecimal number
+{
+int d=(int)num;
+
+switch (d)
+{
+case 10:
+return "A";
+case 11:
+return "B";
+case 12:
+return "C";
+case 13:
+return "D";
+case 14:
+return "E";
+case 15:
+return "F";
+
+default:
+return Integer.toString(d);
+}
+}
+
+
+public static boolean isHexadecimal (String input) {
+String hexPattern = "^[0-9a-fA-F]+$";
+
+// Use Pattern.matches to check if the input string matches the pattern
+return Pattern.matches(hexPattern, input);
+}
+
+public static String noMod1(String input) { //dividing to substrings of 1 digit
+int divided = input.length();
+String output = "";
+for (int i=0; i<divided; i++) {
+char subOutput = input.charAt(i);
+output += DecToBin(HexToDec(subOutput)); //converting each char to binary char and adding to the output string
+}
+return(output);
+}
+
+public static int HexToDec (char num) //converting hexadecimal charts number to decimal number
+{
+switch (num)
+{
+case 'A':
+return 10;
+case 'B':
+return 11;
+case 'C':
+return 12;
+case 'D':
+return 13;
+case 'E':
+return 14;
+case 'F':
+return 15;
+default:
+return (int)(num-'0'); //giving the actual number, not the ASCII value
+}
+}
+
+public static String DecToBin(int dec) { //converting decimal number to binary
+String remains="";
+if (dec==0) {
+remains= "0";
+}
+while (dec>0) {
+remains = remains + dec%2;
+dec = dec/2;
+}
+if (remains.length()%4 !=0) { //adding zeros if needed to form a binary number
+return giveZero(reverseString(remains));
+}
+return reverseString(remains); //the pattern requires reading down top
+}
+
+public static String reverseString (String s) { //reversing the string
+if (s.isEmpty())
+return "0";
+String strRev="";
+for (int i = s.length()-1; i>=0; i--) {
+strRev = strRev + s.charAt(i);
+}
+return strRev;
+
+
+}
+
+
+
+}
+
