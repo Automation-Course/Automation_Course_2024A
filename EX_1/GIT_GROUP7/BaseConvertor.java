@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.InputMismatchException;
+
 public class BaseConvertor {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -8,16 +9,19 @@ public class BaseConvertor {
         while (!exit) {
 
             try {
-                System.out.println("Choose conversion direction:");
+                // Display menu for conversion options
+                System.out.println("Welcome To GROUP 7 Convertor, Please Choose conversion direction:");
                 System.out.println("1. Binary to Hexadecimal");
                 System.out.println("2. Hexadecimal to Binary");
                 System.out.println("3. Exit");
 
+                // Get user choice
                 int choice = scanner.nextInt();
                 scanner.nextLine();
 
                 switch (choice) {
                     case 1:
+                        // Binary to Hexadecimal conversion
                         System.out.println("Enter binary number:");
                         String binaryInput = scanner.nextLine();
                         if (isValidBinary(binaryInput)) {
@@ -27,6 +31,7 @@ public class BaseConvertor {
                         }
                         break;
                     case 2:
+                        // Hexadecimal to Binary conversion
                         System.out.println("Enter hexadecimal number:");
                         String hexInput = scanner.nextLine();
                         if (isValidHexadecimal(hexInput)) {
@@ -36,13 +41,15 @@ public class BaseConvertor {
                         }
                         break;
                     case 3:
+                        // User Exit the program
                         exit = true;
                         System.out.println("Exiting the program. Goodbye!");
                         break;
                     default:
                         System.out.println("Invalid choice. Please enter 1, 2, or 3.");
                 }
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
+                // Handle invalid input
                 System.out.println("Invalid input. Please enter a valid integer.");
                 scanner.nextLine();
             }
@@ -51,24 +58,29 @@ public class BaseConvertor {
         scanner.close();
     }
 
+    // Check if the Binary number is valid
     private static boolean isValidBinary(String binary) {
         return binary.matches("[01]+");
     }
 
+    // Check if the hexadecimal number is valid
     private static boolean isValidHexadecimal(String hex) {
         return hex.matches("[0-9A-F]+");
     }
 
+    // Convert binary to hexadecimal
     private static String binaryToHex(String binary) {
         int decimal = binaryToDecimal(binary);
         return decimalToHex(decimal);
     }
 
+    // Convert hexadecimal to binary
     private static String hexToBinary(String hex) {
         int decimal = hexToDecimal(hex);
         return decimalToBinary(decimal);
     }
 
+    // Convert binary to decimal
     private static int binaryToDecimal(String binary) {
         int decimal = 0;
         int binaryLength = binary.length();
@@ -81,6 +93,7 @@ public class BaseConvertor {
         return decimal;
     }
 
+    // Convert decimal to hexadecimal
     private static String decimalToHex(int decimal) {
         StringBuilder hex = new StringBuilder();
 
@@ -94,6 +107,7 @@ public class BaseConvertor {
         return hex.toString();
     }
 
+    // Convert hexadecimal to decimal
     private static int hexToDecimal(String hex) {
         int decimal = 0;
         int hexLength = hex.length();
@@ -107,6 +121,7 @@ public class BaseConvertor {
         return decimal;
     }
 
+    // Convert decimal to binary
     private static String decimalToBinary(int decimal) {
         StringBuilder binary = new StringBuilder();
 
