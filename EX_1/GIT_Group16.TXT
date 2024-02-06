@@ -1,0 +1,145 @@
+import java.util.Scanner;
+
+public class Group_16 {
+
+    // a function for transforming a binary number or a hexadecimal number to decimal number
+    public static int flipIt(String number, int base) {
+        int result = 0;
+        int power = 1;
+
+        // Starts from the least significant digit
+        for (int i = number.length() - 1; i >= 0; i--) {
+            char digit = number.charAt(i);
+            int digitValue;
+            if (Character.isDigit(digit)) //is.Digit function making sure that the given variable "digit" is a digit
+            {
+                digitValue = digit - '0'; // to get the int number using ASCII table (0 = 48)
+            }
+            else // the variable "digit" is between A-F
+            {
+                digitValue = Character.toUpperCase(digit) - 'A' + 10;
+                // 'A' in hexadecimal base is 065, so subtracting it from a given number and adding 10 will give a decimal value number
+            }
+            result += digitValue * power; // making the calculation
+            power *= base; // making sure that the next digit will get the right power multiplication
+        }
+        return result;
+    }
+
+    // a function that converts a given decimal to hexadecimal
+        public static String DecimalToHex(int decimalValue) {
+            if (decimalValue == 0) {
+                return "0";
+            }
+
+            StringBuilder hexString = new StringBuilder();
+
+            while (decimalValue > 0) {
+                int remainder = decimalValue % 16; // getting the remainder
+
+                if (remainder < 10)  // if the remainder is less than 10 than assign a digit
+                {
+                    hexString.insert(0, (char) ('0' + remainder)); // ASCII
+                } else // assign a char
+                {
+                    hexString.insert(0, (char) ('A' + remainder - 10)); // ASCII
+                }
+
+                decimalValue /= 16;
+            }
+
+            return hexString.toString();
+        }
+
+    // a function that converts a given decimal to Binary
+        public static String DecimalToBinary(int decimalValue) {
+            if (decimalValue == 0) {
+                return "0";
+            }
+
+            StringBuilder binaryString = new StringBuilder();
+
+            while (decimalValue > 0) {
+                int remainder = decimalValue % 2;  // getting the remainder
+                binaryString.insert(0, remainder);
+                decimalValue /= 2;
+            }
+
+            return binaryString.toString();
+        }
+
+
+
+    // A function that checks if the given number is a binary number
+    public static boolean isBinary(String value) {
+        return value.matches("[01]+");
+    }
+
+    // A function that checks if the given number is a Hexadecimal number
+    public static boolean isHexadecimal(String value) {
+        return value.matches("[0-9A-F]+");
+    }
+
+    // transforming the Binary given number to Hexadecimal
+    public static String binaryToHexadecimal(String binaryValue) {
+        int decimalValue = flipIt(binaryValue, 2); // getting the input in a decimal base
+        return DecimalToHex(decimalValue);
+    }
+
+    // transforming the Hexadecimal given number to Binary
+    public static String hexadecimalToBinary(String hexadecimalValue) {
+        int decimalValue = flipIt(hexadecimalValue, 16); // getting the input in a decimal base
+        return DecimalToBinary(decimalValue);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) { // presenting the options to the user
+            System.out.println("Choose what conversion you want to make:");
+            System.out.println("1. Binary to Hexadecimal");
+            System.out.println("2. Hexadecimal to Binary");
+            System.out.println("3. Exit");
+
+            System.out.print("Choose an option (1/2/3): ");
+            String choice = scanner.nextLine();
+
+            if (choice.equals("1")) { // the user wants to make a conversion from Binary to Hexadecimal
+                System.out.print("Enter your binary value:");
+                String binaryInput = scanner.nextLine();
+                if (binaryInput.length() <= 23) // checking that there is no deviation from defined limits
+                {
+                    if (isBinary(binaryInput)) {
+                        String hexadecimalOutput = binaryToHexadecimal(binaryInput);
+                        System.out.println("Hexadecimal:" + hexadecimalOutput);
+                    } else {
+                        System.out.println("Invalid binary input. Please enter a valid binary value.");
+                    }
+                }
+                else {
+                        System.out.println("The binary input is too long. insert up to 23 digits");
+                }
+            } else if (choice.equals("2")) { // the user wants to make a conversion from Hexadecimal Binary
+                System.out.print("Enter hexadecimal value: ");
+                String hexadecimalInput = scanner.nextLine();
+                if (hexadecimalInput.length() <= 6) // checking that there is no deviation from defined limits
+                {
+                    if (isHexadecimal(hexadecimalInput)) {
+                        String binaryOutput = hexadecimalToBinary(hexadecimalInput);
+                        System.out.println("Binary: " + binaryOutput);
+                    } else {
+                        System.out.println("Invalid hexadecimal input. Please enter a valid hexadecimal value.");
+                    }
+                }
+                else {
+                    System.out.println("The hexadecimal input is too long. insert up to 6 digits");
+                }
+            } else if (choice.equals("3")) { // the user doesnt want to make another conversion
+                System.out.println("Exiting the calculator.");
+                break;
+            } else {
+                System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
+        }
+        scanner.close();
+    }
+}
